@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
 const API_BASE_URL = 'https://swapi.dev/api/films/';
-const API_SEARCH_URL = 'https://swapi.dev/api/films/?search';
 
 interface Item {
   title: string;
@@ -10,150 +9,117 @@ interface Item {
   episode_id: number;
 }
 
-interface ErrorBoundaryProps {
-  children: React.ReactNode;
-}
+const ErrorBoundary: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [hasError, setHasError] = useState(false);
 
-class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
-  state = { hasError: false };
+  const handleReset = () => {
+    setHasError(false);
+    window.location.reload();
+  };
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
+  return hasError ? (
+      <div className="error-container">
+        <p>Something went wrong.</p>
+        <button onClick={handleReset}>Reload</button>
+      </div>
+  ) : (
+      <React.Fragment>
+        {React.Children.map(children, (child) =>
+            React.cloneElement(child as React.ReactElement, { onError: setHasError })
+        )}
+      </React.Fragment>
+  );
+};
 
-  componentDidCatch(error: unknown, errorInfo: unknown) {
-    console.error('Caught error:', error, errorInfo);
-  }
+const App: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+  const [items, setItems] = useState<Item[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-container">
-          <p>Something went wrong.</p>
-          <button onClick={() => window.location.reload()}>Reload</button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+  useEffect(() => {
+    fetchData(searchTerm);
+  }, []); // Fetch data once on mount
 
-class App extends React.Component<
-  unknown,
-  { searchTerm: string; items: Item[]; loading: boolean; error: string | null }
-> {
-  constructor(props: unknown) {
-    super(props);
-    const savedSearch = localStorage.getItem('searchTerm') || '';
-    this.state = {
-      searchTerm: savedSearch,
-      items: [],
-      loading: false,
-      error: null,
-    };
-  }
+  useEffect(() => {
+    localStorage.setItem('searchTerm', searchTerm);
+  }, [searchTerm]); // Save search term whenever it changes
 
-  componentDidMount() {
-    this.fetchData(this.state.searchTerm);
-  }
+  const fetchData = async (query: string) => {
+    setLoading(true);
+    setError(null);
 
-  fetchData = async (query: string) => {
-    this.setState({ loading: true, error: null });
     try {
-      const searchQuery = query.trim();
-      let response;
-      if (searchQuery == '') {
-        response = await fetch(`${API_BASE_URL}`);
-      } else {
-        response = await fetch(`${API_SEARCH_URL}=${searchQuery}`);
-      }
+      const url = query.trim()
+          ? `${API_BASE_URL}?search=${encodeURIComponent(query)}`
+          : API_BASE_URL;
+
+      const response = await fetch(url);
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
-      } else {
-        const data = await response.json();
-        const items: Item[] = data.results as Item[];
-        this.setState({
-          searchTerm: query.trim(),
-          items: items,
-          error: null,
-          loading: false,
-        });
       }
+
+      const data = await response.json();
+      setItems(data.results || []);
     } catch (err) {
-      if (err instanceof Error) {
-        this.setState({ error: err.message });
-      } else {
-        this.setState({ error: 'An unknown error occurred' });
-      }
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
-      this.setState({ loading: false });
+      setLoading(false);
     }
   };
 
-  handleSearch = () => {
-    const trimmedSearch = this.state.searchTerm.trim();
-    localStorage.setItem('searchTerm', trimmedSearch);
-    this.fetchData(trimmedSearch);
+  const handleSearch = () => {
+    fetchData(searchTerm.trim());
   };
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value });
-  };
-
-  render() {
-    return (
+  return (
       <ErrorBoundary>
         <div className="container">
           <div className="search-bar">
             <input
-              value={this.state.searchTerm}
-              onChange={this.handleChange}
-              placeholder="Search..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search..."
             />
-            <button onClick={this.handleSearch}>Search</button>
+            <button onClick={handleSearch}>Search</button>
           </div>
           <div className="results-container">
-            {this.state.loading ? (
-              <div className="loading">Loading...</div>
-            ) : this.state.error ? (
-              <div className="error">{this.state.error}</div>
+            {loading ? (
+                <div className="loading">Loading...</div>
+            ) : error ? (
+                <div className="error">{error}</div>
             ) : (
-              <div>
-                <div className="result-header">
-                  <span className="header-title">Movie Title</span>
-                  <span className="header-director">Director</span>
+                <div>
+                  <div className="result-header">
+                    <span className="header-title">Movie Title</span>
+                    <span className="header-director">Director</span>
+                  </div>
+                  {items.length > 0 ? (
+                      items.map((item) => (
+                          <div key={item.episode_id} className="result-item">
+                            <span className="movie-title">{item.title}</span>
+                            <span className="movie-director">({item.director})</span>
+                          </div>
+                      ))
+                  ) : (
+                      <p>No results found.</p>
+                  )}
                 </div>
-                {this.state.items.length > 0 ? (
-                  this.state.items.map((item) => (
-                    <div key={item.episode_id} className="result-item">
-                      <span className="movie-title">{item.title}</span>
-                      <span className="movie-director">({item.director})</span>
-                    </div>
-                  ))
-                ) : (
-                  <p>No results found.</p>
-                )}
-              </div>
             )}
           </div>
           <button
-            className="error-button"
-            onClick={() => {
-              try {
+              className="error-button"
+              onClick={() => {
+                setError('Test Error is thrown');
                 throw new Error('Test Error is thrown');
-              } catch (error) {
-                console.error('Caught error:', error);
-                this.setState({ error: 'An test error is thrown.' });
-              }
-            }}
+              }}
           >
             Throw Error
           </button>
         </div>
       </ErrorBoundary>
-    );
-  }
-}
+  );
+};
 
 export default App;
