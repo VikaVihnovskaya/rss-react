@@ -103,13 +103,13 @@
   box-shadow: -3px 4px 8px 0px rgba(110, 219, 115, 0.58);
 }
 
-.movie-title,
+.people-title,
 .header-title {
   flex: 1;
   font-weight: bold;
 }
 
-.movie-director,
+.people-gender,
 .header-director {
   flex: 1;
   text-align: right;
@@ -118,6 +118,29 @@
 
 .result-item p {
   color: #666;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+
+}
+.pageNumber{
+  color: white;
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+.prev-btn:hover{
+  background-color: darkgreen;
+  color: white;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
+}
+.next-btn:hover {
+  background-color: darkgreen;
+  color: white;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
 }
 
 .error-container {
