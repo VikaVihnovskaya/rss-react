@@ -1,9 +1,9 @@
 import React from 'react';
 
-interface Item {
-  title: string;
-  director: string;
-  episode_id: number;
+export interface Item {
+  name: string;
+  gender: string;
+  url: string;
 }
 
 interface ResultsListProps {
@@ -19,14 +19,14 @@ const ResultsList: React.FC<ResultsListProps> = ({ items, loading, error }) => {
   return (
     <div className="results-container">
       <div className="result-header">
-        <span className="header-title">Movie Title</span>
-        <span className="header-director">Director</span>
+        <span className="header-title">Name</span>
+        <span className="header-director">Gender</span>
       </div>
       {items.length > 0 ? (
         items.map((item) => (
-          <div key={item.episode_id} className="result-item">
-            <span className="movie-title">{item.title}</span>
-            <span className="movie-director">({item.director})</span>
+          <div key={item.url} className="result-item">
+            <span className="people-title">{item.name}</span>
+            <span className="people-gender">{item.gender}</span>
           </div>
         ))
       ) : (
