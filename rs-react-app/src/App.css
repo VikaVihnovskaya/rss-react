@@ -124,15 +124,14 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
-
 }
-.pageNumber{
+.pageNumber {
   color: white;
   margin-top: 10px;
   margin-right: 20px;
   margin-left: 20px;
 }
-.prev-btn:hover{
+.prev-btn:hover {
   background-color: darkgreen;
   color: white;
   box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
@@ -173,4 +172,24 @@
 .error-button:hover {
   background-color: #b71c1c;
   box-shadow: 0 0 10px rgba(211, 47, 47, 0.7);
+}
+
+.floating-modal {
+  position: absolute;
+  width: 300px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
 }

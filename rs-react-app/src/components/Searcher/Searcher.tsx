@@ -17,6 +17,15 @@ const Searcher: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [modalPosition, setModalPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
+
+  function getLastParam(url) {
+    const parts = url.split('/').filter(Boolean);
+    return parts[parts.length - 1];
+  }
 
   useEffect(() => {
     setPage(page);
@@ -74,6 +83,20 @@ const Searcher: React.FC = () => {
     fetchData(searchTerm, newPage);
   };
 
+  const handleItemClick = (item: Item, event: React.MouseEvent) => {
+    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    setSelectedItem(item);
+    setModalPosition({
+      top: rect.top + window.scrollY + 20,
+      left: rect.left + window.scrollX + 140,
+    });
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      params.set('details', getLastParam(item.url));
+      return params;
+    });
+  };
+
   const closeDetails = () => {
     setSelectedItem(null);
     setSearchParams({ page: page.toString() });
@@ -89,14 +112,23 @@ const Searcher: React.FC = () => {
       <div className="content">
         <div
           className={`left-section ${selectedItem ? 'shrink' : ''}`}
-          onClick={closeDetails}
+          // onClick={closeDetails}
         >
-          <ResultsList items={items} loading={loading} error={error} />
+          <ResultsList
+            items={items}
+            loading={loading}
+            error={error}
+            onItemClick={handleItemClick}
+          />
           <Pagination currentPage={page} onPageChange={handlePageChange} />
         </div>
-        {selectedItem && (
+        {selectedItem && modalPosition && (
           <div className="right-section">
-            <ItemDetails url={selectedItem.url} onClose={closeDetails} />
+            <ItemDetails
+              url={selectedItem.url}
+              onClose={closeDetails}
+              position={modalPosition}
+            />
           </div>
         )}
       </div>

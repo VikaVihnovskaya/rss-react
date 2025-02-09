@@ -10,9 +10,15 @@ interface ResultsListProps {
   items: Item[];
   loading: boolean;
   error: string | null;
+  onItemClick: (item: Item, event: React.MouseEvent) => void;
 }
 
-const ResultsList: React.FC<ResultsListProps> = ({ items, loading, error }) => {
+const ResultsList: React.FC<ResultsListProps> = ({
+  items,
+  loading,
+  error,
+  onItemClick,
+}) => {
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -24,7 +30,11 @@ const ResultsList: React.FC<ResultsListProps> = ({ items, loading, error }) => {
       </div>
       {items.length > 0 ? (
         items.map((item) => (
-          <div key={item.url} className="result-item">
+          <div
+            key={item.url}
+            className="result-item"
+            onClick={(event) => onItemClick(item, event)}
+          >
             <span className="people-title">{item.name}</span>
             <span className="people-gender">{item.gender}</span>
           </div>
