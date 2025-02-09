@@ -193,3 +193,31 @@
   border: none;
   cursor: pointer;
 }
+
+.not-found {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.not-found h1 {
+  font-size: 2rem;
+  color: red;
+}
+
+.not-found p {
+  font-size: 1.2rem;
+}
+
+.not-found a {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: blue;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.not-found a:hover {
+  background: darkblue;
+}
