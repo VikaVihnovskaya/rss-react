@@ -1,5 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
 
+interface ItemDetails {
+  name: string;
+  gender: string;
+  height: string;
+  mass: string;
+  hairColor: string;
+}
+
 interface ItemDetailsProps {
   url: string;
   onClose: () => void;
@@ -11,7 +19,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({
   onClose,
   position,
 }) => {
-  const [details, setDetails] = useState<null>(null);
+  const [details, setDetails] = useState<ItemDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -75,7 +83,7 @@ const ItemDetails: React.FC<ItemDetailsProps> = ({
             <strong>Weight:</strong> {details?.mass}
           </p>
           <p>
-            <strong>Hair Color:</strong> {details?.hair_color}
+            <strong>Hair Color:</strong> {details?.hairColor}
           </p>
         </div>
       )}{' '}

@@ -22,7 +22,7 @@ const Searcher: React.FC = () => {
     left: number;
   } | null>(null);
 
-  function getLastParam(url) {
+  function getLastParam(url: string) {
     const parts = url.split('/').filter(Boolean);
     return parts[parts.length - 1];
   }
