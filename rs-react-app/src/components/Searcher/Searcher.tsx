@@ -1,7 +1,6 @@
-// Searcher.tsx
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { useGetItemsQuery } from '../../slices/itemsSlice.ts';
+import { useGetItemsQuery } from '../../slices/itemsSlice';
 import SearchBar from '../SearchBar/SearchBar';
 import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
@@ -19,6 +18,7 @@ const Searcher: React.FC = () => {
     top: number;
     left: number;
   } | null>(null);
+  const [selectedItems, setSelectedItems] = useState<Item[]>([]);
 
   const { data, error, isLoading } = useGetItemsQuery({ searchTerm, page });
 
@@ -59,9 +59,32 @@ const Searcher: React.FC = () => {
     });
   };
 
+  const handleItemSelect = (item: Item, isSelected: boolean) => {
+    setSelectedItems((prevSelectedItems) => {
+      if (isSelected) {
+        return [...prevSelectedItems, item];
+      } else {
+        return prevSelectedItems.filter(
+          (selected) => selected.url !== item.url
+        );
+      }
+    });
+  };
+
   const closeDetails = () => {
     setSelectedItem(null);
     setSearchParams({ page: page.toString() });
+  };
+
+  const unselectAll = () => {
+    setSelectedItems([]);
+  };
+
+  const downloadSelectedItems = () => {
+    const parser = new Parser();
+    const csv = parser.parse(selectedItems);
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, `${selectedItems.length}_items.csv`);
   };
 
   return (
@@ -78,6 +101,8 @@ const Searcher: React.FC = () => {
             loading={isLoading}
             error={error ? error.toString() : null}
             onItemClick={handleItemClick}
+            onItemSelect={handleItemSelect}
+            selectedItems={selectedItems}
           />
           <Pagination currentPage={page} onPageChange={handlePageChange} />
         </div>
@@ -91,6 +116,19 @@ const Searcher: React.FC = () => {
           </div>
         )}
       </div>
+      {selectedItems.length > 0 && (
+        <div className="flyout-text">
+          <p>{selectedItems.length} items are selected</p>
+          <div className="flyout">
+            <button className="flyout-btn" onClick={unselectAll}>
+              Unselect all
+            </button>
+            <button className="flyout-btn" onClick={downloadSelectedItems}>
+              Download
+            </button>
+          </div>
+        </div>
+      )}
       <button
         className="error-button"
         onClick={() => {

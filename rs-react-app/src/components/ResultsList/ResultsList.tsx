@@ -11,6 +11,8 @@ interface ResultsListProps {
   loading: boolean;
   error: string | null;
   onItemClick: (item: Item, event: React.MouseEvent) => void;
+  onItemSelect: (item: Item, isSelected: boolean) => void;
+  selectedItems: Item[];
 }
 
 const ResultsList: React.FC<ResultsListProps> = ({
@@ -18,6 +20,8 @@ const ResultsList: React.FC<ResultsListProps> = ({
   loading,
   error,
   onItemClick,
+  onItemSelect,
+  selectedItems,
 }) => {
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
@@ -26,7 +30,7 @@ const ResultsList: React.FC<ResultsListProps> = ({
     <div className="results-container">
       <div className="result-header">
         <span className="header-title">Name</span>
-        <span className="header-director">Gender</span>
+        <span className="header-gender">Gender</span>
       </div>
       {items.length > 0 ? (
         items.map((item) => (
@@ -35,6 +39,13 @@ const ResultsList: React.FC<ResultsListProps> = ({
             className="result-item"
             onClick={(event) => onItemClick(item, event)}
           >
+            <input
+              type="checkbox"
+              checked={selectedItems.some(
+                (selected) => selected.url === item.url
+              )}
+              onChange={(e) => onItemSelect(item, e.target.checked)}
+            />
             <span className="people-title">{item.name}</span>
             <span className="people-gender">{item.gender}</span>
           </div>
