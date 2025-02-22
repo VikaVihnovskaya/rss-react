@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-interface ItemDetails {
+export interface ItemDetails {
   name: string;
   gender: string;
   height: string;

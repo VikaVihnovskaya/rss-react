@@ -1,16 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { ItemDetails } from './itemDetailsSlice.ts';
 
 interface Item {
   name: string;
   url: string;
-}
-
-interface ItemDetails {
-  name: string;
-  gender: string;
-  height: string;
-  mass: string;
-  hairColor: string;
 }
 
 interface ItemsResponse {
