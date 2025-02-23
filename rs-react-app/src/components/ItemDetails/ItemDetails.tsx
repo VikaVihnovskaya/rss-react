@@ -1,6 +1,6 @@
 // ItemDetails.tsx
 import React, { useEffect, useRef } from 'react';
-import { useGetItemDetailsQuery } from './../../slices/itemDetailsSlice.ts';
+import { useGetItemDetailsQuery } from './../../slices/itemDetailsSlice';
 
 interface ItemDetailsProps {
   url: string;

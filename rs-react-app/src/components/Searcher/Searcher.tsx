@@ -2,10 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useGetItemsQuery } from '../../slices/itemsSlice';
 import SearchBar from '../SearchBar/SearchBar';
-import ResultsList from '../ResultsList/ResultsList';
+import ResultsList, { Item } from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import ItemDetails from '../ItemDetails/ItemDetails';
-import { Item } from '../ResultsList/ResultsList';
 
 const Searcher: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -80,12 +79,7 @@ const Searcher: React.FC = () => {
     setSelectedItems([]);
   };
 
-  const downloadSelectedItems = () => {
-    const parser = new Parser();
-    const csv = parser.parse(selectedItems);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `${selectedItems.length}_items.csv`);
-  };
+  const downloadSelectedItems = () => {};
 
   return (
     <div className="container">

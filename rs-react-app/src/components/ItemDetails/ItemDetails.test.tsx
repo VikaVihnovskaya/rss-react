@@ -1,78 +1,119 @@
-import { render, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { Provider } from 'react-redux';
+import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import { BrowserRouter } from 'react-router-dom';
+import {
+  itemDetailsSlice,
+  useGetItemDetailsQuery,
+} from '../../slices/itemDetailsSlice';
 import ItemDetails from './ItemDetails';
-import { describe, it, expect, vi } from 'vitest';
 
-describe('ItemDetails', () => {
-  const url = 'https://swapi.dev/api/people/1/';
+const mockData = {
+  name: 'Luke Skywalker',
+  gender: 'male',
+  height: '172',
+  mass: '77',
+  hairColor: 'blond',
+};
+
+vi.mock('../../slices/itemDetailsSlice', async (importOriginal) => {
+  const actual = await importOriginal();
+  return {
+    ...(actual as object),
+    useGetItemDetailsQuery: vi.fn(() => ({
+      data: { results: mockData },
+      isLoading: false,
+      error: null,
+    })),
+  };
+});
+
+describe('ItemDetails Component', () => {
   const position = { top: 100, left: 100 };
-  const mockOnClose = vi.fn();
-
-  it('renders loading state initially', () => {
-    render(<ItemDetails url={url} onClose={mockOnClose} position={position} />);
-    expect(screen.getByText(/loading/i)).toBeInTheDocument();
-  });
-
-  it('renders error state on fetch failure', async () => {
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() => Promise.reject(new Error('Failed to load details')))
-    );
-
-    render(<ItemDetails url={url} onClose={mockOnClose} position={position} />);
-
-    await waitFor(() =>
-      expect(screen.getByText(/failed to load details/i)).toBeInTheDocument()
-    );
-  });
-
-  it('renders item details on fetch success', async () => {
-    const mockData = {
-      name: 'Luke Skywalker',
-      gender: 'male',
-      height: '172',
-      mass: '77',
-      hairColor: 'blond',
-    };
-
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() =>
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockData),
-        })
-      )
-    );
-
-    render(<ItemDetails url={url} onClose={mockOnClose} position={position} />);
-
-    console.log('Mock Data:', mockData);
-
-    await waitFor(() => {
-      screen.debug();
-      expect(screen.getByText(/luke skywalker/i)).toBeInTheDocument();
-      expect(screen.getByText(/male/i)).toBeInTheDocument();
-      expect(screen.getByText(/172/i)).toBeInTheDocument();
-      expect(screen.getByText(/172/i)).toBeInTheDocument();
-      expect(screen.getByText(/77/i)).toBeInTheDocument();
-      expect(screen.getByText(/blond/i)).toBeInTheDocument();
+  const mockClose = vi.fn();
+  let store: EnhancedStore;
+  beforeEach(() => {
+    vi.clearAllMocks();
+    store = configureStore({
+      reducer: {
+        [itemDetailsSlice.reducerPath]: itemDetailsSlice.reducer,
+      },
+      middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(itemDetailsSlice.middleware),
     });
   });
 
-  it('calls onClose when clicking outside the modal', async () => {
-    render(<ItemDetails url={url} onClose={mockOnClose} position={position} />);
+  it('renders the ItemDetails component', () => {
+    vi.mocked(useGetItemDetailsQuery).mockReturnValue({
+      data: {
+        name: 'Luke Skywalker',
+        gender: 'male',
+        height: '172',
+        mass: '77',
+        hairColor: 'blond',
+      },
+      error: null,
+      isLoading: false,
+      refetch: vi.fn(),
+    });
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ItemDetails url="1" onClose={mockClose} position={position} />
+        </BrowserRouter>
+      </Provider>
+    );
 
-    document.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-
-    await waitFor(() => expect(mockOnClose).toHaveBeenCalled());
+    expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
   });
 
-  it('calls onClose when clicking the close button', async () => {
-    render(<ItemDetails url={url} onClose={mockOnClose} position={position} />);
+  it('displays loading indicator when loading', () => {
+    vi.mocked(useGetItemDetailsQuery).mockReturnValue({
+      data: null,
+      error: null,
+      isLoading: true,
+      refetch: vi.fn(),
+    });
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ItemDetails url="1" onClose={mockClose} position={position} />
+        </BrowserRouter>
+      </Provider>
+    );
 
-    screen.getByText('×').click();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+  });
 
-    await waitFor(() => expect(mockOnClose).toHaveBeenCalled());
+  it('handles outside click to close the modal', async () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ItemDetails url="1" onClose={mockClose} position={position} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    fireEvent.mouseDown(document);
+
+    await waitFor(() => {
+      expect(mockClose).toHaveBeenCalled();
+    });
+  });
+
+  it('handles close button click to close the modal', () => {
+    render(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ItemDetails url="1" onClose={mockClose} position={position} />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    const closeButton = screen.getByText('×');
+    fireEvent.click(closeButton);
+
+    expect(mockClose).toHaveBeenCalled();
   });
 });

@@ -8,7 +8,12 @@ const store = configureStore({
     [itemSlice.reducerPath]: itemSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(itemDetailsSlice.middleware),
+    getDefaultMiddleware().concat(
+      itemDetailsSlice.middleware,
+      itemSlice.middleware
+    ),
 });
+
+export type AppStore = ReturnType<typeof configureStore>;
 
 export default store;

@@ -1,17 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemDetails } from './itemDetailsSlice.ts';
-
-interface Item {
-  name: string;
-  url: string;
-}
+import { Item } from '../components/ResultsList/ResultsList';
 
 interface ItemsResponse {
   results: Item[];
 }
 
 export const itemSlice = createApi({
-  reducerPath: 'api',
+  reducerPath: 'item',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
   endpoints: (builder) => ({
     getItems: builder.query<
@@ -29,4 +25,4 @@ export const itemSlice = createApi({
   }),
 });
 
-export const { useGetItemsQuery, useGetItemDetailsQuery } = itemSlice;
+export const { useGetItemsQuery } = itemSlice;
