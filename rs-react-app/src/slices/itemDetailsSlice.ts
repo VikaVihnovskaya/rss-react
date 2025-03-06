@@ -10,7 +10,7 @@ export interface ItemDetails {
 
 export const itemDetailsSlice = createApi({
   reducerPath: 'api',
-  baseQuery: fetchBaseQuery({ baseUrl: '' }), // Your base URL here
+  baseQuery: fetchBaseQuery({ baseUrl: '' }), 
   endpoints: (builder) => ({
     getItemDetails: builder.query<ItemDetails, string>({
       query: (url) => url,
