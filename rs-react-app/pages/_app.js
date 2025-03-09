@@ -1,4 +1,3 @@
-// pages/_app.js
 import '../styles/App.css';
 import '../styles/index.css';
 import { Provider } from 'react-redux';
