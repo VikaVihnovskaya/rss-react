@@ -1,0 +1,301 @@
+#__next {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: #9fdb77;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.container {
+  padding: 16px;
+}
+
+.search-bar {
+  padding: 16px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  gap: 8px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.search-bar button {
+  padding: 8px 16px;
+  background-color: forestgreen;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.search-bar button:hover {
+  background-color: darkgreen;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
+  color: black;
+}
+
+.dark .search-bar button {
+  background-color: grey;
+}
+
+.results-container {
+  padding: 16px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  min-height: 200px;
+  margin-top: 16px;
+}
+
+.dark .results-container {
+  background-color: #333;
+  color: #fff;
+}
+
+.loading {
+  text-align: center;
+  padding: 16px;
+}
+
+.error {
+  color: red;
+}
+.result-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  background-color: #d5d8d9;
+  padding: 10px;
+  border-bottom: 2px solid #ccc;
+}
+
+.dark .result-header {
+  background-color: white;
+}
+
+.result-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.result-item:hover {
+  box-shadow: -3px 4px 8px 0px rgba(110, 219, 115, 0.58);
+}
+
+.people-title,
+.header-title {
+  flex: 1;
+  font-weight: bold;
+}
+
+.dark .header-title {
+  color: gray;
+}
+
+.people-gender,
+.header-director {
+  flex: 1;
+  text-align: right;
+  color: gray;
+}
+
+.result-item p {
+  color: #666;
+}
+
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.pageNumber {
+  color: black;
+  margin-top: 10px;
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.dark .pageNumber {
+  color: white;
+}
+.prev-btn:hover {
+  background-color: darkgreen;
+  color: white;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
+}
+.next-btn:hover {
+  background-color: darkgreen;
+  color: white;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
+}
+
+.dark .prev-btn:hover {
+  background-color: #7f7f7f;
+}
+
+.dark .next-btn:hover {
+  background-color: #7f7f7f;
+}
+
+.error-container {
+  padding: 16px;
+  color: red;
+  background-color: #fdd;
+  border: 1px solid red;
+  border-radius: 8px;
+}
+
+.error-container button {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error-button {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.error-button:hover {
+  background-color: #b71c1c;
+  box-shadow: 0 0 10px rgba(211, 47, 47, 0.7);
+}
+
+.floating-modal {
+  position: absolute;
+  width: 300px;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.dark .floating-modal {
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dark .close-button {
+  color: white;
+}
+
+.not-found {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.not-found h1 {
+  font-size: 2rem;
+  color: red;
+}
+
+.not-found p {
+  font-size: 1.2rem;
+}
+
+.not-found a {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: blue;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.not-found a:hover {
+  background: darkblue;
+}
+
+.light {
+  background-color: white;
+  color: black;
+}
+
+.dark {
+  background-color: black;
+  color: white;
+}
+
+.theme-selector {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+.flyout {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.flyout-btn:hover {
+  background-color: darkgreen;
+  color: white;
+  box-shadow: 0 0 10px rgba(47, 211, 113, 0.7);
+}
+
+.dark .flyout-btn {
+  background-color: white;
+}
+
+.dark .flyout-btn:hover {
+  background-color: #7f7f7f;
+  color: white;
+}
