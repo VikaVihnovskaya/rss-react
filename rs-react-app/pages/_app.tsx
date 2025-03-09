@@ -7,13 +7,13 @@ import store from '../store/store';
 
 function MyApp({ Component, pageProps }) {
   return (
-      <Provider store={store}>
-        <ErrorBoundary>
-          <ThemeProvider>
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </ErrorBoundary>
-      </Provider>
+    <Provider store={store}>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <Component {...pageProps} />
+        </ThemeProvider>
+      </ErrorBoundary>
+    </Provider>
   );
 }
 

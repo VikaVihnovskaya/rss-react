@@ -11,7 +11,7 @@ const Searcher: React.FC = () => {
   const { query } = router;
   const [page, setPage] = useState(Number(query.page) || 1);
   const [searchTerm, setSearchTerm] = useState(
-      (typeof window !== 'undefined' && localStorage.getItem('searchTerm')) || ''
+    (typeof window !== 'undefined' && localStorage.getItem('searchTerm')) || ''
   );
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [modalPosition, setModalPosition] = useState<{
@@ -61,7 +61,7 @@ const Searcher: React.FC = () => {
         return [...prevSelectedItems, item];
       } else {
         return prevSelectedItems.filter(
-            (selected) => selected.url !== item.url
+          (selected) => selected.url !== item.url
         );
       }
     });
@@ -81,56 +81,56 @@ const Searcher: React.FC = () => {
   const downloadSelectedItems = () => {};
 
   return (
-      <div className="container">
-        <SearchBar
-            searchTerm={searchTerm}
-            onSearchTermChange={setSearchTerm}
-            onSearch={() => {}}
-        />
-        <div className="content">
-          <div className={`left-section ${selectedItem ? 'shrink' : ''}`}>
-            <ResultsList
-                items={data?.results || []}
-                loading={isLoading}
-                error={error ? error.toString() : null}
-                onItemClick={handleItemClick}
-                onItemSelect={handleItemSelect}
-                selectedItems={selectedItems}
-            />
-            <Pagination currentPage={page} onPageChange={handlePageChange} />
-          </div>
-          {selectedItem && modalPosition && (
-              <div className="right-section">
-                <ItemDetails
-                    url={selectedItem.url}
-                    onClose={closeDetails}
-                    position={modalPosition}
-                />
-              </div>
-          )}
+    <div className="container">
+      <SearchBar
+        searchTerm={searchTerm}
+        onSearchTermChange={setSearchTerm}
+        onSearch={() => {}}
+      />
+      <div className="content">
+        <div className={`left-section ${selectedItem ? 'shrink' : ''}`}>
+          <ResultsList
+            items={data?.results || []}
+            loading={isLoading}
+            error={error ? error.toString() : null}
+            onItemClick={handleItemClick}
+            onItemSelect={handleItemSelect}
+            selectedItems={selectedItems}
+          />
+          <Pagination currentPage={page} onPageChange={handlePageChange} />
         </div>
-        {selectedItems.length > 0 && (
-            <div className="flyout-text">
-              <p>{selectedItems.length} items are selected</p>
-              <div className="flyout">
-                <button className="flyout-btn" onClick={unselectAll}>
-                  Unselect all
-                </button>
-                <button className="flyout-btn" onClick={downloadSelectedItems}>
-                  Download
-                </button>
-              </div>
-            </div>
+        {selectedItem && modalPosition && (
+          <div className="right-section">
+            <ItemDetails
+              url={selectedItem.url}
+              onClose={closeDetails}
+              position={modalPosition}
+            />
+          </div>
         )}
-        <button
-            className="error-button"
-            onClick={() => {
-              throw new Error('Test Error is thrown');
-            }}
-        >
-          Throw Error
-        </button>
       </div>
+      {selectedItems.length > 0 && (
+        <div className="flyout-text">
+          <p>{selectedItems.length} items are selected</p>
+          <div className="flyout">
+            <button className="flyout-btn" onClick={unselectAll}>
+              Unselect all
+            </button>
+            <button className="flyout-btn" onClick={downloadSelectedItems}>
+              Download
+            </button>
+          </div>
+        </div>
+      )}
+      <button
+        className="error-button"
+        onClick={() => {
+          throw new Error('Test Error is thrown');
+        }}
+      >
+        Throw Error
+      </button>
+    </div>
   );
 };
 

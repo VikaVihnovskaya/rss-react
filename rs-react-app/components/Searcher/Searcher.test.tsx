@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { itemSlice } from '../../slices/itemsSlice';
 import { itemDetailsSlice } from '../../slices/itemDetailsSlice.ts';
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 import Searcher from './Searcher';
 import '@testing-library/jest-dom';
 
@@ -39,7 +39,10 @@ describe('Searcher Component', () => {
         [itemDetailsSlice.reducerPath]: itemDetailsSlice.reducer,
       },
       middleware: (getDefaultMiddleware) =>
-          getDefaultMiddleware().concat(itemSlice.middleware, itemDetailsSlice.middleware),
+        getDefaultMiddleware().concat(
+          itemSlice.middleware,
+          itemDetailsSlice.middleware
+        ),
     });
     vi.mocked(useRouter).mockReturnValue({
       query: { page: '1' },
@@ -49,18 +52,18 @@ describe('Searcher Component', () => {
 
   it('renders Searcher component', () => {
     render(
-        <Provider store={store}>
-          <Searcher />
-        </Provider>
+      <Provider store={store}>
+        <Searcher />
+      </Provider>
     );
     expect(screen.getByText('Search')).toBeInTheDocument();
   });
 
   it('updates search term', () => {
     render(
-        <Provider store={store}>
-          <Searcher />
-        </Provider>
+      <Provider store={store}>
+        <Searcher />
+      </Provider>
     );
 
     const searchInput = screen.getByPlaceholderText(
@@ -73,9 +76,9 @@ describe('Searcher Component', () => {
 
   it('handles item selection', () => {
     render(
-        <Provider store={store}>
-          <Searcher />
-        </Provider>
+      <Provider store={store}>
+        <Searcher />
+      </Provider>
     );
 
     const checkbox = screen.getAllByRole('checkbox')[0];
