@@ -131,7 +131,6 @@ describe('ResultsList Component', () => {
     const firstCheckbox = screen.getAllByRole('checkbox')[0];
     const secondCheckbox = screen.getAllByRole('checkbox')[1];
 
-
     expect(firstCheckbox).toBeChecked();
 
     expect(secondCheckbox).not.toBeChecked();

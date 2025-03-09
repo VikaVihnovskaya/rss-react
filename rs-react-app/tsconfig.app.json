@@ -20,6 +20,12 @@
     "noFallthroughCasesInSwitch": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "vite.config.js",
+    "node_modules/vitest/globals.d.ts"
+  ],
   "exclude": ["node_modules"]
 }

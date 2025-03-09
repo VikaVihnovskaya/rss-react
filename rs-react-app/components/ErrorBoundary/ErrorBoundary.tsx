@@ -1,43 +1,44 @@
-import React, { Component, ReactNode } from 'react';
+'use client';
+
+import { useEffect, useState, ReactNode } from 'react';
 
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
 
-interface ErrorBoundaryState {
-  hasError: boolean;
-}
+const ErrorBoundary: React.FC<ErrorBoundaryProps> = ({ children }) => {
+  const [hasError, setHasError] = useState(false);
 
-class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
-  constructor(props: ErrorBoundaryProps) {
-    super(props);
-    this.state = { hasError: false };
+  useEffect(() => {
+    const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
+      console.error('ErrorBoundary caught an error:', error, errorInfo);
+      setHasError(true);
+    };
+
+    const resetErrorBoundary = () => {
+      setHasError(false);
+      window.location.reload();
+    };
+
+    window.addEventListener('error', handleError);
+    window.addEventListener('unhandledrejection', handleError);
+
+    return () => {
+      window.removeEventListener('error', handleError);
+      window.removeEventListener('unhandledrejection', handleError);
+    };
+  }, []);
+
+  if (hasError) {
+    return (
+      <div className="error-container">
+        <p>Something went wrong.</p>
+        <button onClick={() => window.location.reload()}>Reload</button>
+      </div>
+    );
   }
 
-  static getDerivedStateFromError(): ErrorBoundaryState {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
-  }
-
-  handleReset = () => {
-    this.setState({ hasError: false });
-    window.location.reload();
-  };
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="error-container">
-          <p>Something went wrong.</p>
-          <button onClick={this.handleReset}>Reload</button>
-        </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+  return <>{children}</>;
+};
 
 export default ErrorBoundary;

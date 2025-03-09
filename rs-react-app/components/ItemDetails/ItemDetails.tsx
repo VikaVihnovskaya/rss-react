@@ -1,5 +1,7 @@
+'use client';
+
 import React, { useEffect, useRef } from 'react';
-import { useGetItemDetailsQuery } from './../../slices/itemDetailsSlice';
+import { useGetItemDetailsQuery } from '../../slices/itemDetailsSlice';
 
 interface ItemDetailsProps {
   url: string;

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { ItemDetails } from './itemDetailsSlice.ts';
-import { Item } from '../components/ResultsList/ResultsList';
+import { Item } from '../app/components/ResultsList/ResultsList';
 
 interface ItemsResponse {
   results: Item[];
