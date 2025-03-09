@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface ThemeContextType {
   theme: 'light' | 'dark';
@@ -7,12 +7,13 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
-  });
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem('theme') as 'light' | 'dark') || 'light';
+    setTheme(savedTheme);
+  }, []);
 
   const toggleTheme = (newTheme: 'light' | 'dark') => {
     setTheme(newTheme);
@@ -20,9 +21,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
-      <div className={theme}>{children}</div>
-    </ThemeContext.Provider>
+      <ThemeContext.Provider value={{ theme, toggleTheme }}>
+        <div className={theme}>{children}</div>
+      </ThemeContext.Provider>
   );
 };
 

@@ -1,11 +1,16 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { Provider } from 'react-redux';
-import { configureStore, EnhancedStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { itemSlice } from '../../slices/itemsSlice';
 import { itemDetailsSlice } from '../../slices/itemDetailsSlice.ts';
+import { useRouter } from 'next/router'
 import Searcher from './Searcher';
+import '@testing-library/jest-dom';
+
+vi.mock('next/router', () => ({
+  useRouter: vi.fn(),
+}));
 
 const mockResults = [
   { name: 'Luke Skywalker', gender: 'Male', url: '1' },
@@ -25,40 +30,37 @@ vi.mock('../../slices/itemsSlice', async (importOriginal) => {
 });
 
 describe('Searcher Component', () => {
-  let store: EnhancedStore;
-
+  let store;
   beforeEach(() => {
+    vi.clearAllMocks();
     store = configureStore({
       reducer: {
         [itemSlice.reducerPath]: itemSlice.reducer,
         [itemDetailsSlice.reducerPath]: itemDetailsSlice.reducer,
       },
       middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(
-          itemSlice.middleware,
-          itemDetailsSlice.middleware
-        ),
+          getDefaultMiddleware().concat(itemSlice.middleware, itemDetailsSlice.middleware),
+    });
+    vi.mocked(useRouter).mockReturnValue({
+      query: { page: '1' },
+      replace: vi.fn(),
     });
   });
 
   it('renders Searcher component', () => {
     render(
-      <Provider store={store}>
-        <BrowserRouter>
+        <Provider store={store}>
           <Searcher />
-        </BrowserRouter>
-      </Provider>
+        </Provider>
     );
     expect(screen.getByText('Search')).toBeInTheDocument();
   });
 
   it('updates search term', () => {
     render(
-      <Provider store={store}>
-        <BrowserRouter>
+        <Provider store={store}>
           <Searcher />
-        </BrowserRouter>
-      </Provider>
+        </Provider>
     );
 
     const searchInput = screen.getByPlaceholderText(
@@ -71,11 +73,9 @@ describe('Searcher Component', () => {
 
   it('handles item selection', () => {
     render(
-      <Provider store={store}>
-        <BrowserRouter>
+        <Provider store={store}>
           <Searcher />
-        </BrowserRouter>
-      </Provider>
+        </Provider>
     );
 
     const checkbox = screen.getAllByRole('checkbox')[0];
