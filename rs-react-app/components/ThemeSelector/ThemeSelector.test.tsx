@@ -41,7 +41,7 @@ describe('ThemeSelector Component', () => {
     const mockToggleTheme = vi.fn();
     const mockUseTheme = vi.mocked(useTheme);
     mockUseTheme.mockReturnValue({
-      theme: 'dark', // Set the initial theme to light
+      theme: 'dark',
       toggleTheme: mockToggleTheme,
     });
 

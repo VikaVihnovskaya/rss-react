@@ -1,4 +1,3 @@
-// ItemDetails.tsx
 import React, { useEffect, useRef } from 'react';
 import { useGetItemDetailsQuery } from './../../slices/itemDetailsSlice';
 

@@ -28,7 +28,6 @@ describe('ResultsList Component', () => {
       />
     );
 
-    // Verify that the component is rendered
     expect(screen.getByText('Name')).toBeInTheDocument();
     expect(screen.getByText('Gender')).toBeInTheDocument();
   });
@@ -45,7 +44,6 @@ describe('ResultsList Component', () => {
       />
     );
 
-    // Verify that the loading indicator is displayed
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
@@ -63,7 +61,6 @@ describe('ResultsList Component', () => {
       />
     );
 
-    // Verify that the error message is displayed
     expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
@@ -79,7 +76,6 @@ describe('ResultsList Component', () => {
       />
     );
 
-    // Verify that the items are displayed
     expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
     expect(screen.getByText('Leia Organa')).toBeInTheDocument();
   });
@@ -99,7 +95,6 @@ describe('ResultsList Component', () => {
     const firstItem = screen.getByText('Luke Skywalker');
     fireEvent.click(firstItem);
 
-    // Verify that the item click handler is called
     expect(onItemClick).toHaveBeenCalledWith(items[0], expect.any(Object));
   });
 
@@ -118,7 +113,6 @@ describe('ResultsList Component', () => {
     const firstCheckbox = screen.getAllByRole('checkbox')[0];
     fireEvent.click(firstCheckbox);
 
-    // Verify that the item select handler is called
     expect(onItemSelect).toHaveBeenCalledWith(items[0], true);
   });
 
@@ -137,9 +131,9 @@ describe('ResultsList Component', () => {
     const firstCheckbox = screen.getAllByRole('checkbox')[0];
     const secondCheckbox = screen.getAllByRole('checkbox')[1];
 
-    // Verify that the first item is selected
+
     expect(firstCheckbox).toBeChecked();
-    // Verify that the second item is not selected
+
     expect(secondCheckbox).not.toBeChecked();
   });
 });
