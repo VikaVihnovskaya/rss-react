@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "format:fix": "prettier --write .",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "prepare": "husky"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",
