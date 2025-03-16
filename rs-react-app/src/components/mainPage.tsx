@@ -30,7 +30,7 @@ const MainPage: React.FC = () => {
               <strong>Terms Accepted:</strong>{' '}
               {entry.termsAccepted ? 'Yes' : 'No'}
             </p>
-            {/*{entry.picture && <img src={entry.picture} alt="Uploaded" />}*/}
+            {entry.picture && <img src={entry.picture} alt="Uploaded" />}
           </div>
         ))}
       </div>
