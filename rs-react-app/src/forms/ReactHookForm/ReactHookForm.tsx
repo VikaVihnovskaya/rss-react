@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch } from 'react-redux';
@@ -35,6 +35,9 @@ const validationSchema = yup.object().shape({
     .boolean()
     .oneOf([true], 'You must accept the terms and conditions')
     .required('Terms acceptance is required'),
+  picture:yup
+      .mixed()
+      .required('Picture is required')
 });
 
 const HookForm: React.FC = () => {
@@ -44,13 +47,24 @@ const HookForm: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<FormData>({
+    // @ts-ignore
     resolver: yupResolver(validationSchema),
     mode: 'onChange',
   });
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const base64Picture = await fileToBase64(e.target.files[0] as File);
+      setValue('picture',  `data:image/png;base64,${base64Picture}`);
+    }
+  };
+
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    dispatch(addFormData(data));
+      dispatch(addFormData(data));
     navigate('/');
   };
 
@@ -96,7 +110,16 @@ const HookForm: React.FC = () => {
           </select>
         </label>
         {errors.gender && <p className="text-red">{errors.gender.message}</p>}
-
+        <label>
+          Picture:
+          <input
+            type="file"
+            {...register('picture')}
+            accept="image/jpeg, image/png"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+          />
+        </label>
         <label>
           <input type="checkbox" {...register('termsAccepted')} /> Accept Terms
           and Conditions
@@ -112,5 +135,22 @@ const HookForm: React.FC = () => {
     </div>
   );
 };
+
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result.split(',')[1]);
+      } else {
+        reject('Failed to convert file to Base64');
+      }
+    };
+
+    reader.onerror = () => reject('Error reading file');
+    reader.readAsDataURL(file);
+  });
+}
 
 export default HookForm;

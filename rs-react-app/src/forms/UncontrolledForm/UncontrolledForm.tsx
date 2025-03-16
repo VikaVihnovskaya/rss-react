@@ -45,15 +45,21 @@ const UncontrolledForm: React.FC = () => {
     if (!formRef.current) return;
     const formData = new FormData(formRef.current);
     const entries = Object.fromEntries(formData.entries());
+
+    const file = formData.get('picture') as File;
+    const base64Picture = await fileToBase64(file as File);
+
     const values = {
       name: entries.name as string,
-      age: parseInt(entries.age as string, 10), // Convert age to a number
+      age: parseInt(entries.age as string, 10),
       email: entries.email as string,
       password: entries.password as string,
       confirmPassword: entries.confirmPassword as string,
       gender: entries.gender as string,
-      termsAccepted: entries.termsAccepted === 'on', // Convert the checkbox value to a boolean
+      termsAccepted: entries.termsAccepted === 'on',
+      picture: `data:image/png;base64,${base64Picture}`,
     };
+
     try {
       await validationSchema.validate(values, { abortEarly: false });
       dispatch(addFormData(values));
@@ -94,6 +100,15 @@ const UncontrolledForm: React.FC = () => {
           </select>
         </label>
         <label>
+          Picture:
+          <input
+            type="file"
+            name="picture"
+            accept="image/jpeg, image/png"
+            required
+          />
+        </label>
+        <label>
           <input type="checkbox" name="termsAccepted" /> Accept Terms and
           Conditions
         </label>
@@ -103,6 +118,23 @@ const UncontrolledForm: React.FC = () => {
       </form>
     </div>
   );
+};
+
+const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        resolve(reader.result.split(',')[1]);
+      } else {
+        reject('Failed to convert file to Base64');
+      }
+    };
+
+    reader.onerror = () => reject('Error reading file');
+    reader.readAsDataURL(file);
+  });
 };
 
 export default UncontrolledForm;
