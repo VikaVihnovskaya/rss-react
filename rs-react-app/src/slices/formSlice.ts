@@ -8,7 +8,7 @@ export interface FormData {
   confirmPassword: string;
   gender: string;
   termsAccepted: boolean;
-  // picture: string; // base64 format
+  picture: string;
   // country: string;
 }
 
