@@ -1,20 +1,27 @@
 import React from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import './App.css';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.tsx';
-import Searcher from './components/Searcher/Searcher.tsx';
-import NotFoundPage from './components/NotFoundPage/NotFoundPage.tsx';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store/store.ts';
+import Main from './components/mainPage.tsx';
+import UncontrolledForm from './forms/UncontrolledForm/UncontrolledForm.tsx';
+import ReactHookForm from './forms/ReactHookForm/ReactHookForm.tsx';
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <ErrorBoundary>
+    <Provider store={store}>
+      <Router>
+        <nav className="nav-menu">
+          <Link to="/">Home</Link>
+          <Link to="/uncontrolled">Uncontrolled Form</Link>
+          <Link to="/hook-form">Hook Form</Link>
+        </nav>
         <Routes>
-          <Route path="/*" element={<Searcher />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/uncontrolled" element={<UncontrolledForm />} />
+          <Route path="/hook-form" element={<ReactHookForm />} />
         </Routes>
-      </ErrorBoundary>
-    </BrowserRouter>
+      </Router>
+    </Provider>
   );
 };
 
