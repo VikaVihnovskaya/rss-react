@@ -17,6 +17,7 @@ export default defineConfig({
   preview: {
     port: 443,
   },
+
   // for dev
   server: {
     port: 5173,
