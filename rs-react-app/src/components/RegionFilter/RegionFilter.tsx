@@ -5,7 +5,10 @@ interface RegionFilterProps {
   onFilterRegionChange: (region: string) => void;
 }
 
-const RegionFilter: React.FC<RegionFilterProps> = ({ filterRegion, onFilterRegionChange }) => {
+const RegionFilter: React.FC<RegionFilterProps> = ({
+  filterRegion,
+  onFilterRegionChange,
+}) => {
   return (
     <select
       value={filterRegion}

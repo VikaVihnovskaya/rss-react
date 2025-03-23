@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
-import CountryCard, { Country} from '../CountryCard/CountryCard';
+import CountryCard, { Country } from '../CountryCard/CountryCard';
 import RegionFilter from '../RegionFilter/RegionFilter';
 import SortOptions from '../SortOptions/SortOptions';
 

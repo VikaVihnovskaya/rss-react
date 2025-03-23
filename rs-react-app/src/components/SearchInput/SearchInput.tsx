@@ -5,7 +5,10 @@ interface SearchInputProps {
   onSearchTermChange: (term: string) => void;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ searchTerm, onSearchTermChange }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+  searchTerm,
+  onSearchTermChange,
+}) => {
   return (
     <input
       type="text"

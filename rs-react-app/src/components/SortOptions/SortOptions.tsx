@@ -5,7 +5,10 @@ interface SortOptionsProps {
   onSortOptionChange: (option: string) => void;
 }
 
-const SortOptions: React.FC<SortOptionsProps> = ({ sortOption, onSortOptionChange }) => {
+const SortOptions: React.FC<SortOptionsProps> = ({
+  sortOption,
+  onSortOptionChange,
+}) => {
   return (
     <select
       value={sortOption}
