@@ -1,49 +1,23 @@
-# React + TypeScript + Vite
+# React Performance
+## Application Requirements
+- Fetch and Display Data
+  Fetch country data from the REST Countries API.
+  Display a list of countries, including their name, population, region, and flag.
+- Add Filtering and Sorting
+  Filter: Allow users to filter countries by region using a dropdown menu.
+  Search: Add a search bar for users to search countries by name.
+  Sort: Include an option to sort countries by population or name (ascending/descending).
+- Optimize the App for Performance (mind the Performance Profiling Task details)
+  useMemo: Use useMemo to memoize the filtered, searched, and sorted list of countries.
+  useCallback: Use useCallback to memoize event handler functions for filtering, searching, and sorting.
+  React.memo: Wrap components like individual country cards in React.memo to prevent unnecessary re-renders.
+  key: Ensure proper use of key props for lists to avoid reconciliation issues.
+- Highlight countries visited by the user (you can store visited countries in the local storage).
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-Currently, two official plugins are available:
+## Profiling the application performance before optimization
+<img src="./public/beforeOptimization.png">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Profiling the application performance after optimization
 
-## Expanding the ESLint configuration
+<img src="./public/afterOptimization.png">
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react';
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-});
-```
