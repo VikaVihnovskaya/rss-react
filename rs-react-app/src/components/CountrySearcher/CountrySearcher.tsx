@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import CountryCard, { Country} from '../CountryCard/CountryCard';
+import RegionFilter from '../RegionFilter/RegionFilter';
 
 const App: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -84,17 +85,10 @@ const App: React.FC = () => {
           onSearchTermChange={setSearchTerm}
         />
 
-        <select
-          value={filterRegion}
-          onChange={(e) => setFilterRegion(e.target.value)}
-        >
-          <option value="">All Regions</option>
-          <option value="Africa">Africa</option>
-          <option value="Americas">Americas</option>
-          <option value="Asia">Asia</option>
-          <option value="Europe">Europe</option>
-          <option value="Oceania">Oceania</option>
-        </select>
+        <RegionFilter
+          filterRegion={filterRegion}
+          onFilterRegionChange={setFilterRegion}
+        />
 
         <select
           value={sortOption}
