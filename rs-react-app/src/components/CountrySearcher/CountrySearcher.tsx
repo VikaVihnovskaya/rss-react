@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import SearchInput from '../SearchInput/SearchInput';
 import CountryCard, { Country} from '../CountryCard/CountryCard';
 import RegionFilter from '../RegionFilter/RegionFilter';
+import SortOptions from '../SortOptions/SortOptions';
 
 const App: React.FC = () => {
   const [countries, setCountries] = useState<Country[]>([]);
@@ -90,20 +91,10 @@ const App: React.FC = () => {
           onFilterRegionChange={setFilterRegion}
         />
 
-        <select
-          value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
-        >
-          <option value="">No Sorting</option>
-          <option value="name-asc">Sort by Name (A-Z)</option>
-          <option value="name-desc">Sort by Name (Z-A)</option>
-          <option value="population-asc">
-            Sort by Population (Low to High)
-          </option>
-          <option value="population-desc">
-            Sort by Population (High to Low)
-          </option>
-        </select>
+        <SortOptions
+          sortOption={sortOption}
+          onSortOptionChange={setSortOption}
+        />
       </div>
 
       <div className="container">
