@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import SearchInput from '../SearchInput/SearchInput';
 
 interface Country {
   name: {
@@ -54,11 +55,9 @@ const App: React.FC = () => {
       .then((data: Country[]) => setCountries(data));
   }, []);
 
-
   useEffect(() => {
     localStorage.setItem('visitedCountries', JSON.stringify(visitedCountries));
   }, [visitedCountries]);
-
 
   const handleVisitCountry = useCallback((countryName: string) => {
     setVisitedCountries((prev) => {
@@ -78,20 +77,17 @@ const App: React.FC = () => {
     });
   }, []);
 
-
   const filteredCountries = useMemo(() => {
     return countries.filter((country) =>
       country.region.toLowerCase().includes(filterRegion.toLowerCase())
     );
   }, [countries, filterRegion]);
 
-
   const searchedCountries = useMemo(() => {
     return filteredCountries.filter((country) =>
       country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [filteredCountries, searchTerm]);
-
 
   const sortedCountries = useMemo(() => {
     switch (sortOption) {
@@ -121,11 +117,10 @@ const App: React.FC = () => {
       <h1>Country Explorer</h1>
 
       <div>
-        <input
-          type="text"
-          placeholder="Search countries..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+
+        <SearchInput
+          searchTerm={searchTerm}
+          onSearchTermChange={setSearchTerm}
         />
 
         <select
