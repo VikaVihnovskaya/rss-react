@@ -1,5 +1,7 @@
 # React Performance
+
 ## Application Requirements
+
 - Fetch and Display Data
   Fetch country data from the REST Countries API.
   Display a list of countries, including their name, population, region, and flag.
@@ -15,9 +17,9 @@
 - Highlight countries visited by the user (you can store visited countries in the local storage).
 
 ## Profiling the application performance before optimization
+
 <img src="./public/beforeOptimization.png">
 
 ## Profiling the application performance after optimization
 
 <img src="./public/afterOptimization.png">
-
